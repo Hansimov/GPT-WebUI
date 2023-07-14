@@ -20,10 +20,6 @@ export default defineComponent({
 
 <style scoped>
 .input-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 10px;
 }
 

@@ -26,3 +26,10 @@ cd GPT-WebUI
 npm install 
 npm run dev
 ```
+
+## npm packages
+
+```sh
+npm install vuetify
+npm install vue-sidebar-menu
+```
