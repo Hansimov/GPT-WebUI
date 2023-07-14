@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue'
 import ChatHistory from '@/components/ChatHistory.vue'
 import InputTextArea from '@/components/InputTextArea.vue'
+
 export default defineComponent({
   components: {
     ChatHistory,

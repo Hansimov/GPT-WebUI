@@ -1,28 +1,37 @@
-<template>
-  <div class="chat-history">
-    <div
-      v-for="entry in entries"
-      :key="entry.id"
-      class="chat-history-entry"
-      @click="loadChatHistory(entry.id)"
-    >
-      {{ entry.name }}
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { SidebarMenu } from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 
 export default defineComponent({
-  data() {
+  data: () => {
     return {
-      entries: [
-        { id: 1, name: 'Chat 1' },
-        { id: 2, name: 'Chat 2' },
-        { id: 3, name: 'Chat 3' }
+      menu: [
+        {
+          header: 'Main Navigation',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/',
+          title: 'Dashboard',
+          icon: 'fa fa-user'
+        },
+        {
+          href: '/charts',
+          title: 'Charts',
+          icon: 'fa fa-chart-area',
+          child: [
+            {
+              href: '/charts/sublink',
+              title: 'Sub Link'
+            }
+          ]
+        }
       ]
     }
+  },
+  components: {
+    SidebarMenu
   },
   methods: {
     loadChatHistory(id) {
@@ -31,6 +40,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <div class="chat-history">
+    <sidebar-menu :menu="menu" />
+  </div>
+</template>
 
 <style scoped>
 .chat-history {
