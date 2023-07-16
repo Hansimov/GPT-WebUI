@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-interface ClassOfRole {
+interface ConfigsOfRole {
   [key: string]: string
 }
 
@@ -21,18 +21,39 @@ export default defineComponent({
         content: 'I am GPT-3.5'
       },
       {
-        role: 'Claude2',
-        content: 'I am Claude2'
+        role: 'claude-2',
+        content: 'I am Claude-2'
       }
     ],
     class_of_role: {
       user: 'user-chats',
       'gpt-3.5': 'gpt-35-chats',
       'gpt-4': 'gpt-4-chats',
-      Claude2: 'Claude2-chats'
-    } as ClassOfRole
+      'claude-2': 'Claude2-chats'
+    } as ConfigsOfRole,
+    avatar_of_role: {
+      user: 'src/assets/user.png',
+      'claude-2': 'src/assets/claude.png',
+      'gpt-3.5': 'src/assets/gpt-3.5.png',
+      'gpt-4': 'src/assets/gpt-4.png'
+    } as ConfigsOfRole,
+    display_name_of_role: {
+      user: 'User',
+      claude2: 'Claude-2',
+      'gpt-3.5': 'GPT-3.5',
+      'gpt-4': 'GPT-4'
+    }
   }),
-  computed: {}
+  computed: {},
+  methods: {
+    async getAvatar(role: string) {
+      const avatarPath = this.avatar_of_role[role]
+      if (avatarPath) {
+        const module = await import(avatarPath)
+        return module.default
+      }
+    }
+  }
 })
 </script>
 
@@ -44,7 +65,14 @@ export default defineComponent({
       :key="idx"
       :class="class_of_role[message.role]"
     >
-      {{ message.role }}: {{ message.content }}
+      <v-row>
+        <v-col cols="auto">
+          <v-avatar>
+            <v-img :src="avatar_of_role[message.role]" :alt="message.role" />
+          </v-avatar>
+        </v-col>
+        <v-col> {{ message.role }}: {{ message.content }} </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
