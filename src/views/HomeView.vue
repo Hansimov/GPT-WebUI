@@ -19,7 +19,7 @@ export default defineComponent({
     <v-navigation-drawer v-model="left_sidebar_visible"> </v-navigation-drawer>
     <v-navigation-drawer location="right" v-model="right_sidebar_visible">
       <v-list>
-        <v-list-item v-for="n in 5" :key="n" :title="`Item ${n}`" link> </v-list-item>
+        <v-list-item v-for="n in 5" :key="n" :title="`Prompt ${n}`" link> </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
