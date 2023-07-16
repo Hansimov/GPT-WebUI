@@ -1,15 +1,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import ChatHistory from '@/components/ChatHistory.vue'
-import UserInput from '@/components/UserInput.vue'
+import Chats from '@/components/Chats.vue'
 
 export default defineComponent({
   components: {
-    UserInput
+    Chats
   },
   data: () => ({
-    left_sidebar_visible: false,
-    right_sidebar_visible: false,
+    left_sidebar_visible: true,
+    right_sidebar_visible: true,
     app_bar_title: 'GPT WebUI'
   })
 })
@@ -42,7 +41,9 @@ export default defineComponent({
       ></v-icon>
     </v-app-bar>
 
-    <v-main>Hello World</v-main>
+    <v-main>
+      <Chats />
+    </v-main>
 
     <v-footer app height="72">
       <v-text-field
