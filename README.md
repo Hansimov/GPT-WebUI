@@ -1,6 +1,12 @@
 # GPT-WebUI
 A clean and powerful web UI for all kinds of GPT-like chat service
 
+## Current UI
+
+Here is the latest interface of the GPT-WebUI:
+
+![](examples/gpt-webui.png)
+
 
 ## npm commands
 

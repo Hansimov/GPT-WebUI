@@ -8,43 +8,41 @@ export default defineComponent({
     UserInput
   },
   data: () => ({
-    left_side_bar_visible: false,
-    right_side_bar_visible: false
+    left_sidebar_visible: false,
+    right_sidebar_visible: false,
+    app_bar_title: 'GPT WebUI'
   })
 })
 </script>
 
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer v-model="left_side_bar_visible"> </v-navigation-drawer>
-    <v-app-bar>
-      <v-icon
-        center
-        size="large"
-        icon="$vuetify"
-        color="cyan"
-        start="true"
-        end="true"
-        @click="left_side_bar_visible = !left_side_bar_visible"
-      ></v-icon>
-      <v-icon
-        center
-        size="large"
-        icon="fa fa-user"
-        color="green"
-        start="true"
-        end="true"
-        @click="right_side_bar_visible = !right_side_bar_visible"
-      ></v-icon>
-    </v-app-bar>
-
-    <v-main>Hello World</v-main>
-
-    <v-navigation-drawer location="right" v-model="right_side_bar_visible">
+  <v-app>
+    <v-navigation-drawer v-model="left_sidebar_visible"> </v-navigation-drawer>
+    <v-navigation-drawer location="right" v-model="right_sidebar_visible">
       <v-list>
         <v-list-item v-for="n in 5" :key="n" :title="`Item ${n}`" link> </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
+    <v-app-bar height="30" flat>
+      <v-icon
+        size="large"
+        :icon="left_sidebar_visible ? 'fa fa-angle-double-left' : 'fa fa-angle-double-right'"
+        color="cyan"
+        end="true"
+        @click="left_sidebar_visible = !left_sidebar_visible"
+      ></v-icon>
+      <v-toolbar-title :text="app_bar_title" class="d-flex justify-center"></v-toolbar-title>
+      <v-icon
+        size="large"
+        :icon="right_sidebar_visible ? 'fa fa-angle-double-right' : 'fa fa-angle-double-left'"
+        color="cyan"
+        start="true"
+        @click="right_sidebar_visible = !right_sidebar_visible"
+      ></v-icon>
+    </v-app-bar>
+
+    <v-main>Hello World</v-main>
 
     <v-footer app height="72">
       <v-text-field
@@ -63,31 +61,4 @@ export default defineComponent({
   A Complete Guide to Flexbox | CSS-Tricks - CSS-Tricks
     * https://css-tricks.com/snippets/css/a-guide-to-flexbox/ 
 */
-.home-view {
-  /* display: flex; */
-  /* height: 97vh; */
-  /* justify-content: space-evenly; */
-  border: solid blue;
-}
-
-.chat-history {
-  /* flex: 1; */
-  /* order: 0; */
-  /* align-self: flex-start; */
-  border: solid red;
-}
-.messages {
-  /* flex: 1; */
-  /* align-self: flex-end; */
-  border: solid green;
-}
-
-.user-input {
-  /* flex: 1;
-  align-self: flex-end; */
-  border: solid yellow;
-  /* order: 1; */
-  /* flex-shrink: 1; */
-  /* margin-bottom: auto; */
-}
 </style>
