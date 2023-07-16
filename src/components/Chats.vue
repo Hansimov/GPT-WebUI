@@ -60,18 +60,19 @@ export default defineComponent({
 <template>
   <div>
     <v-container
+      fill-height
       fluid
       v-for="(message, idx) in messages"
       :key="idx"
       :class="class_of_role[message.role]"
     >
-      <v-row>
+      <v-row align="center">
         <v-col cols="auto">
           <v-avatar>
             <v-img :src="avatar_of_role[message.role]" :alt="message.role" />
           </v-avatar>
         </v-col>
-        <v-col> {{ message.role }}: {{ message.content }} </v-col>
+        <v-col><v-card variant="text" :text="message.content"></v-card></v-col>
       </v-row>
     </v-container>
   </div>
