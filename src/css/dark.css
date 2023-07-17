@@ -1,0 +1,50 @@
+.v-app-bar {
+    background-color: #282828;
+}
+
+.v-toolbar {
+    background-color: #282828;
+}
+
+.v-toolbar-title, .v-toolbar__content {
+    background-color: #282828;
+    color: #ccc;
+    z-index: 100;
+}
+
+.v-navigation-drawer, .v-navigation-drawer__content  {
+    background-color: #282828;
+    color:#bbb;
+}
+
+.v-container {
+    /* margin: 0; */
+}
+
+.v-field__input,input {
+    background-color: transparent;
+    color: #ddd;
+}
+
+.v-footer, .v-application__wrap {
+    background-color: #333;
+}
+
+.v-main {
+    background-color: #333;
+}
+
+/*  */
+
+.chat {
+    background-color: #333;
+    border: solid #444 1px;
+}
+
+.user-input {
+    background-color: #333;
+    color:white;
+    /* border: solid #444 1px; */
+    margin-bottom: 20px;
+    /* max-width: 600px; */
+}
