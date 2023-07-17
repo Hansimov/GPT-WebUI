@@ -1,34 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  data() {
-    return {
-      message: '',
-      characterLimit: 10000
-    }
-  }
-})
-</script>
-
 <template>
-  <div class="input-container">
-    <input v-model="message" placeholder="prompt" />
-    <div class="character-count">{{ message.length }} / {{ characterLimit }}</div>
-  </div>
+  <v-footer app>
+    <v-textarea
+      class="user-input"
+      density="compact"
+      hide-details
+      rows="1"
+      auto-grow
+      variant="outlined"
+    ></v-textarea>
+  </v-footer>
 </template>
-
-<style scoped>
-.input-container {
-  padding: 10px;
-}
-
-.input-container input {
-  line-height: 2;
-  width: 100%;
-}
-
-.character-count {
-  text-align: left;
-}
-</style>

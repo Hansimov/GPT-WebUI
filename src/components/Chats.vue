@@ -66,29 +66,27 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <v-container fluid v-for="(message, idx) in messages" :key="idx" class="chat">
-      <v-row align="start">
-        <v-col cols="auto">
-          <v-avatar>
-            <v-img
-              :src="llm_configs[message.model]['avatar']"
-              :alt="llm_configs[message.model]['name']"
-            />
-          </v-avatar>
-        </v-col>
-        <v-col>
-          <v-textarea
-            variant="plain"
-            v-model="message.content"
-            rows="1"
-            hide-details
-            auto-grow
-          ></v-textarea>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-container fluid v-for="(message, idx) in messages" :key="idx" class="chat">
+    <v-row align="start">
+      <v-col cols="auto">
+        <v-avatar>
+          <v-img
+            :src="llm_configs[message.model]['avatar']"
+            :alt="llm_configs[message.model]['name']"
+          />
+        </v-avatar>
+      </v-col>
+      <v-col>
+        <v-textarea
+          variant="plain"
+          v-model="message.content"
+          rows="1"
+          hide-details
+          auto-grow
+        ></v-textarea>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style>

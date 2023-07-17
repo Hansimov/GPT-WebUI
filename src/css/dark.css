@@ -1,3 +1,7 @@
+body {
+    zoom: 120%;
+}
+
 .v-app-bar {
     background-color: #282828;
 }
@@ -9,7 +13,6 @@
 .v-toolbar-title, .v-toolbar__content {
     background-color: #282828;
     color: #ccc;
-    z-index: 100;
 }
 
 .v-navigation-drawer, .v-navigation-drawer__content  {
