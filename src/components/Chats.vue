@@ -28,7 +28,8 @@ export default defineComponent({
       {
         model: 'gpt-3.5',
         role: 'llm',
-        content: 'I am GPT-3.5'
+        content:
+          "I am GPT-3.5. I am based on the GPT-4 model, which is a language model developed by OpenAI. GPT stands for Generative Pre-trained Transformer, and the '4' refers to the fourth iteration of this model series. Like its predecessors, GPT-4 is trained on a diverse range of internet text, but it's also fine-tuned with specific datasets to perform certain tasks.I am based on the GPT-4 model, which is a language model developed by OpenAI. GPT stands for Generative Pre-trained Transformer, and the '4' refers to the fourth iteration of this model series. Like its predecessors, GPT-4 is trained on a diverse range of internet text, but it's also fine-tuned with specific datasets to perform certain tasks.I am based on the GPT-4 model, which is a language model developed by OpenAI. GPT stands for Generative Pre-trained Transformer, and the '4' refers to the fourth iteration of this model series. Like its predecessors, GPT-4 is trained on a diverse range of internet text, but it's also fine-tuned with specific datasets to perform certain tasks.I am based on the GPT-4 model, which is a language model developed by OpenAI. GPT stands for Generative Pre-trained Transformer, and the '4' refers to the fourth iteration of this model series. Like its predecessors, GPT-4 is trained on a diverse range of internet text, but it's also fine-tuned with specific datasets to perform certain tasks."
       },
       {
         model: 'claude-2',
@@ -67,13 +68,12 @@ export default defineComponent({
 <template>
   <div>
     <v-container
-      fill-height
       fluid
       v-for="(message, idx) in messages"
       :key="idx"
       :class="llm_configs[message.model]['class']"
     >
-      <v-row align="center">
+      <v-row align="start">
         <v-col cols="auto">
           <v-avatar>
             <v-img
@@ -82,13 +82,22 @@ export default defineComponent({
             />
           </v-avatar>
         </v-col>
-        <v-col><v-card variant="text" :text="message.content"></v-card></v-col>
+        <v-col>
+          <v-textarea
+            variant="plain"
+            v-model="message.content"
+            rows="1"
+            hide-details
+            auto-grow
+          ></v-textarea>
+        </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
 <style>
+/* classes of different models */
 .user-chats {
   background-color: lightgray;
 }
@@ -100,5 +109,18 @@ export default defineComponent({
 }
 .claude-2-chats {
   background-color: lightyellow;
+}
+
+/* padding and min-height of textarea of chats */
+.v-input--density-default {
+  --v-input-padding-top: 0px !important;
+}
+.v-field__input {
+  min-height: calc(
+    max(
+        var(--v-input-control-height, 56px),
+        1.5rem + var(--v-field-input-padding-top) + var(--v-field-input-padding-bottom)
+      ) + var(--v-input-chips-margin-bottom) - 5px
+  ) !important;
 }
 </style>
