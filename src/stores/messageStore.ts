@@ -6,16 +6,17 @@ export const messageStore = defineStore({
     id: 'messages',
     state: () => ({
         messages: [],
-        llm_configs: {}
+        llmConfigs: {},
+        baseUrl: "http://127.0.0.1:5000" // flask backend
     }),
     actions: {
         async fetchMessages() {
-            const response = await axios.get('http://127.0.0.1:5000/messages')
+            const response = await axios.get(`${this.baseUrl}/messages`)
             this.messages = response.data
         },
         async fetchLLMConfigs() {
-            const response = await axios.get('http://127.0.0.1:5000/llm_configs')
-            this.llm_configs = response.data
+            const response = await axios.get(`${this.baseUrl}/llm_configs`)
+            this.llmConfigs = response.data
         }
     }
 })

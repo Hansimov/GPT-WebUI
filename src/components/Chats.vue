@@ -9,12 +9,12 @@ export default defineComponent({
     const messages = computed(() => store.messages)
     // console.log(messages)
     store.fetchLLMConfigs()
-    const llm_configs = computed(() => store.llm_configs)
-    // console.log(llm_configs)
+    const llmConfigs = computed(() => store.llmConfigs)
+    // console.log(llmConfigs)
 
     return {
       messages,
-      llm_configs
+      llmConfigs
     }
   },
   computed: {},
@@ -28,9 +28,9 @@ export default defineComponent({
       <v-col cols="auto">
         <v-avatar>
           <v-img
-            v-if="llm_configs && llm_configs[message.model]"
-            :src="llm_configs[message.model]['avatar']"
-            :alt="llm_configs[message.model]['name']"
+            v-if="llmConfigs && llmConfigs[message.model]"
+            :src="llmConfigs[message.model]['avatar']"
+            :alt="llmConfigs[message.model]['name']"
           />
         </v-avatar>
       </v-col>
