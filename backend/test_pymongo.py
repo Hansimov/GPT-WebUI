@@ -11,15 +11,15 @@ from pymongo import MongoClient
 """
 
 # Connect to MongoDB database
-mongodb_port = "27017"
-mongodb_url = f"mongodb://localhost:{mongodb_port}"
+mongodb_host = "localhost"
+mongodb_port = 27027
+mongodb_url = f"mongodb://{mongodb_host}:{mongodb_port}"
 client = MongoClient(mongodb_url)
 
 db = client["gpt-webui"]
 messages_collection = db["messages"]
 llm_configs_collection = db["llm_configs"]
 
-"""
 # Insert messages into messages collection
 messages = {
     "latest_messages": [
@@ -66,12 +66,12 @@ llm_configs = {
     },
 }
 
-messages_collection.insert_one(messages)
-llm_configs_collection.insert_one(llm_configs)
-"""
 
-# Get messages and llm_configs collections
-llm_configs = llm_configs_collection.find_one()["llm_configs"]
+# Insert and find collections: messages, llm_configs
+llm_configs_collection.insert_one(llm_configs)
+llm_configs = llm_configs_collection.find_one()
 print(llm_configs)
+
+messages_collection.insert_one(messages)
 latest_messages = messages_collection.find_one()["latest_messages"]
 print(latest_messages)
