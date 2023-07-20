@@ -16,6 +16,7 @@ mongod --dbpath "./database/" --port 27027
 Rename collection:
 
 ```sh
+# in mongosh
 use gpt-webui
 db.llm_configs.renameCollection("configs")
 ```
@@ -24,5 +25,12 @@ Dump database:
 
 ```sh
 # [./backend]
-mongodump --host="localhost" --port=27027 --db="gpt-webui"
+mongodump --host="localhost:27027" --db="gpt-webui" --out "dump"
+```
+
+Restore database:
+
+```sh
+# [./backend]
+mongorestore --host="localhost:27027" --db "gpt-webui" --drop "dump/gpt-webui"
 ```
