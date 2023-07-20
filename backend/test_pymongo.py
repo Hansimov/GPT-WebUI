@@ -68,10 +68,10 @@ llm_configs = {
 
 
 # Insert and find collections: messages, llm_configs
-llm_configs_collection.insert_one(llm_configs)
+# llm_configs_collection.insert_one(llm_configs)
 llm_configs = llm_configs_collection.find_one()
 print(llm_configs)
 
-messages_collection.insert_one(messages)
+# messages_collection.insert_one(messages)
 latest_messages = messages_collection.find_one()["latest_messages"]
 print(latest_messages)

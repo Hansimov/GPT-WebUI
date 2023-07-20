@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, watch, computed } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { messageStore } from '@/stores/messageStore'
 
 export default defineComponent({

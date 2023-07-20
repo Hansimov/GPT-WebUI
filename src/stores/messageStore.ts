@@ -11,11 +11,11 @@ export const messageStore = defineStore({
     }),
     actions: {
         async fetchMessages() {
-            const response = await axios.get(`${this.baseUrl}/messages`)
+            const response = await axios.get(`${this.baseUrl}/messages?latest`)
             this.messages = response.data
         },
         async fetchLLMConfigs() {
-            const response = await axios.get(`${this.baseUrl}/llm_configs`)
+            const response = await axios.get(`${this.baseUrl}/configs?llm`)
             this.llmConfigs = response.data
         }
     }

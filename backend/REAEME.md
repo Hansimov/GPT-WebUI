@@ -13,6 +13,13 @@ Launch database:
 mongod --dbpath "./database/" --port 27027
 ```
 
+Rename collection:
+
+```sh
+use gpt-webui
+db.llm_configs.renameCollection("configs")
+```
+
 Dump database:
 
 ```sh
