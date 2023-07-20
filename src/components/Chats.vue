@@ -2,57 +2,19 @@
 import { defineComponent, watch, computed } from 'vue'
 import { messageStore } from '@/stores/messageStore'
 
-interface LLMConfig {
-  name: string
-  class: string
-  avatar: string
-}
-
-interface LLMConfigs {
-  [key: string]: LLMConfig
-}
-
 export default defineComponent({
   setup() {
     const store = messageStore()
-    store.fetchData()
-    const messages = computed(() => store.data)
-
-    // let messages = store.data
+    store.fetchMessages()
+    const messages = computed(() => store.messages)
     // console.log(messages)
-
-    // watch(
-    //   () => store.data,
-    //   (newData) => {
-    //     messages = newData
-    //     console.log(messages)
-    //   }
-    // )
+    store.fetchLLMConfigs()
+    const llm_configs = computed(() => store.llm_configs)
+    // console.log(llm_configs)
 
     return {
       messages,
-      llm_configs: {
-        user: {
-          name: 'User',
-          class: 'user-chats',
-          avatar: 'src/assets/user.png'
-        },
-        'gpt-3.5': {
-          name: 'GPT-3.5',
-          class: 'gpt-35-chats',
-          avatar: 'src/assets/gpt-3.5.png'
-        },
-        'gpt-4': {
-          name: 'GPT-4',
-          class: 'gpt-4-chats',
-          avatar: 'src/assets/gpt-4.png'
-        },
-        'claude-2': {
-          name: 'Claude-2',
-          class: 'claude-2-chats',
-          avatar: 'src/assets/claude-2.png'
-        }
-      } as LLMConfigs
+      llm_configs
     }
   },
   computed: {},
@@ -66,6 +28,7 @@ export default defineComponent({
       <v-col cols="auto">
         <v-avatar>
           <v-img
+            v-if="llm_configs && llm_configs[message.model]"
             :src="llm_configs[message.model]['avatar']"
             :alt="llm_configs[message.model]['name']"
           />
