@@ -8,6 +8,12 @@ Here is the latest interface of the GPT-WebUI:
 ![](examples/gpt-webui.png)
 
 
+## Architecture
+
+Here is the architecture of the GPT-WebUI:
+
+![](examples/architecture.png)
+
 ## npm commands
 
 ```sh
