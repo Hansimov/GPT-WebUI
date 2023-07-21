@@ -1,14 +1,14 @@
 # GPT-WebUI
 A clean and powerful web UI for all kinds of GPT-like chat service
 
-## Current UI
+# Current UI
 
 Here is the latest interface of the GPT-WebUI:
 
 ![](examples/gpt-webui.png)
 
 
-## Architecture
+# Architecture
 
 Here is the architecture of the GPT-WebUI + GPT-Agents + MongoDB:
 
@@ -19,7 +19,7 @@ Here is the architecture of the GPT-Agents:
 
 ![](examples/gpt-agents.png)
 
-## npm commands
+# npm commands
 
 ```sh
 npm init vue@latest
@@ -41,7 +41,7 @@ npm init vue@latest
 ```sh
 cd GPT-WebUI
 npm install 
-npm run dev
+npm run dev  # localhost:5173
 ```
 
 ## npm packages

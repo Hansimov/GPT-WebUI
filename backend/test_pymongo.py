@@ -1,14 +1,5 @@
 from pymongo import MongoClient
 
-"""
-* Install MongoDB Community Edition on Windows
-  * https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/
-  * https://www.mongodb.com/try/download/community
-* Install mongosh
-  * https://www.mongodb.com/try/download/shell
-* Install MongoDB Database Tools
-  * https://www.mongodb.com/try/download/database-tools
-"""
 
 # Connect to MongoDB database
 mongodb_host = "localhost"
