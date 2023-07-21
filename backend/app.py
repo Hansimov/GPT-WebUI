@@ -6,6 +6,15 @@ app = Flask(__name__)
 CORS(app)
 
 
+def response_massage(message):
+    message = {
+        "role": "user",
+        "model": "user",
+        "content": "I'm your master.",
+    }
+    return jsonify({"status": "ok", "message": message})
+
+
 def connect_database(host="localhost", port=27027, database="gpt-webui"):
     mongodb_uri = f"mongodb://{host}:{port}"
     client = MongoClient(mongodb_uri)
@@ -25,12 +34,12 @@ def get_messages():
 
 @app.route("/api/messages", methods=["POST"])
 def post_messages():
-    data = request.json
-    print(data)
-    content = request.json["content"]
-    model = request.json["model"]
+    message = request.json
+    print(message)
+    content = message["content"]
+    model = message["model"]
     print(f"[{model}]: {content}")
-    return jsonify({"status": "ok"})
+    return response_massage(message)
 
 
 @app.route("/api/configs")
