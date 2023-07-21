@@ -10,9 +10,14 @@ Here is the latest interface of the GPT-WebUI:
 
 ## Architecture
 
-Here is the architecture of the GPT-WebUI:
+Here is the architecture of the GPT-WebUI + GPT-Agents + MongoDB:
 
 ![](examples/architecture.png)
+
+
+Here is the architecture of the GPT-Agents:
+
+![](examples/gpt-agents.png)
 
 ## npm commands
 
