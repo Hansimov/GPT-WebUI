@@ -14,7 +14,8 @@ export default defineComponent({
 
     return {
       messages,
-      llmConfigs
+      llmConfigs,
+      handleKeyup: store.handleKeyup
     }
   },
   computed: {},
@@ -41,6 +42,7 @@ export default defineComponent({
           rows="1"
           hide-details
           auto-grow
+          @keyup="handleKeyup($event, message)"
         ></v-textarea>
       </v-col>
     </v-row>

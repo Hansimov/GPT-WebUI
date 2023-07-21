@@ -13,8 +13,8 @@ def connect_database(host="localhost", port=27027, database="gpt-webui"):
     return db
 
 
-@app.route("/messages")
-def get_latest_messages():
+@app.route("/api/messages")
+def get_messages():
     db = connect_database()
     messages = []
     if "latest" in request.args:
@@ -23,7 +23,17 @@ def get_latest_messages():
     return jsonify(messages)
 
 
-@app.route("/configs")
+@app.route("/api/messages", methods=["POST"])
+def post_messages():
+    data = request.json
+    print(data)
+    content = request.json["content"]
+    model = request.json["model"]
+    print(f"[{model}]: {content}")
+    return jsonify({"status": "ok"})
+
+
+@app.route("/api/configs")
 def get_llm_configs():
     db = connect_database()
     configs = {}
