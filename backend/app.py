@@ -1,6 +1,8 @@
+import json
 import time
+import random
 from datetime import datetime
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from pymongo import MongoClient
 
@@ -8,15 +10,43 @@ app = Flask(__name__)
 CORS(app)
 
 
-def response_massage(message):
+def response_message(message):
     now = datetime.now()
-    time.sleep(2)
-    message = {
+    content = (
+        f"My name is Claude. I was created by Anthropic, an AI safety and research company."
+        f"I am designed to be helpful, harmless, and honest in my interactions. My goal is to provide useful information to users in a respectful manner.\n"
+        f"[{now.strftime('%Y-%m-%d %H:%M:%S')}]"
+    )
+    new_message = {
         "role": "gpt-3.5",
         "model": "gpt-3.5",
-        "content": f"I'm gpt-3.5. [{now.strftime('%Y-%m-%d %H:%M:%S')}]",
+        "content": content,
     }
-    return jsonify({"status": "ok", "message": message})
+
+    def generate():
+        index = 0
+        for key, value in new_message.items():
+            if key == "content":
+                content_chunks = value.split()
+                for chunk in content_chunks:
+                    delta = {"content": f" {chunk}"}
+                    delta_json = json.dumps(
+                        {"delta": delta, "finish_reason": None, "index": index}
+                    )
+                    index += 1
+                    print(delta_json, flush=True)
+                    time.sleep(random.random() * 0.3)
+                    yield delta_json
+            else:
+                delta = {key: value}
+                yield json.dumps(
+                    {"delta": delta, "finish_reason": None, "index": index}
+                )
+                index += 1
+                time.sleep(random.random())
+        yield json.dumps({"delta": {}, "finish_reason": "stop", "index": index})
+
+    return Response(generate(), mimetype="application/json")
 
 
 def connect_database(host="localhost", port=27027, database="gpt-webui"):
@@ -43,7 +73,7 @@ def post_messages():
     content = message["content"]
     model = message["model"]
     print(f"[{model}]: {content}")
-    return response_massage(message)
+    return response_message(message)
 
 
 @app.route("/api/configs")
