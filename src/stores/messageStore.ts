@@ -24,8 +24,7 @@ export const messageStore = defineStore({
             const response = await axios.get(`${this.baseUrl}/api/configs?llm`)
             this.llmConfigs = response.data
         },
-
-        async handleKeyup(e: KeyboardEvent, message: Message) {
+        async handleKeyupInChat(e: KeyboardEvent, message: Message) {
             if (e.ctrlKey && e.key === 'Enter') {
                 console.log(message.content)
                 const response = await axios.post(`${this.baseUrl}/api/messages`, {
@@ -37,6 +36,22 @@ export const messageStore = defineStore({
                 console.log(response_message)
                 this.messages.push(response_message)
             }
-        }
+        },
+        async handleKeyupInUserInput(e: KeyboardEvent) {
+            const input_content = e.target.value
+            if (e.ctrlKey && e.key === 'Enter') {
+                console.log(input_content)
+                const input_message: Message = {
+                    model: "user",
+                    role: "user",
+                    content: input_content,
+                }
+                this.messages.push(input_message)
+                const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
+                const response_message: Message = response.data.message
+                console.log(response_message)
+                this.messages.push(response_message)
+            }
+        },
     }
 })
