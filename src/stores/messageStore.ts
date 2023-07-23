@@ -49,7 +49,7 @@ export const messageStore = defineStore({
         async *streamResponse(response: Response) {
             const reader = response.body!.getReader()
             let result = ''
-            while (true) {
+            while (true) { // FIXME - Infinite loop
                 const { done, value } = await reader.read()
                 result += new TextDecoder().decode(value)
                 try {
