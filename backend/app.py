@@ -13,8 +13,9 @@ CORS(app)
 def response_message(message):
     now = datetime.now()
     content = (
-        f"My name is Claude. I was created by Anthropic, an AI safety and research company."
-        f"I am designed to be helpful, harmless, and honest in my interactions. My goal is to provide useful information to users in a respectful manner.\n"
+        f"My name is gpt-3.5. I was created by OpenAi, an AI company.\n"
+        f"I am designed to be helpful, harmless, and honest in my interactions.\n"
+        f"My goal is to provide useful information to users in a respectful manner.\n"
         f"[{now.strftime('%Y-%m-%d %H:%M:%S')}]"
     )
     new_message = {
@@ -38,12 +39,12 @@ def response_message(message):
                     time.sleep(random.random() * 0.3)
                     yield delta_json
             else:
+                time.sleep(random.random() * 2)
                 delta = {key: value}
                 yield json.dumps(
                     {"delta": delta, "finish_reason": None, "index": index}
                 )
                 index += 1
-                time.sleep(random.random())
         yield json.dumps({"delta": {}, "finish_reason": "stop", "index": index})
 
     return Response(generate(), mimetype="application/json")

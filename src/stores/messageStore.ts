@@ -60,15 +60,39 @@ export const messageStore = defineStore({
                     this.messages.push(input_message)
                     this.scrollChatsToBottom()
                     clearUserInput()
-                    this.messages.push(
-                        { "role": "gpt-4", "model": "gpt-4", "content": "Thinking..." }
-                    )
+                    const thinkingMessage: Message = { "role": "gpt-4", "model": "gpt-4", "content": "Thinking..." }
+                    this.messages.push(thinkingMessage)
 
-                    const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
-                    const response_message: Message = response.data.message
-                    console.log(response_message)
-                    this.messages[this.messages.length - 1] = response_message
-                    this.scrollChatsToBottom()
+                    const response = await fetch(`${this.baseUrl}/api/messages`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(input_message)
+                    })
+                    const reader = response.body!.getReader()
+                    let result = ''
+
+                    while (true) {
+                        const { done, value } = await reader.read()
+                        result = new TextDecoder().decode(value)
+                        try {
+                            const response_chunk: Message = JSON.parse(result)
+                            console.log(response_chunk)
+                            if (response_chunk.delta.role) {
+                                this.messages[this.messages.length - 1].role = response_chunk.delta.role
+                                this.messages[this.messages.length - 1].content = ""
+                            }
+                            if (response_chunk.delta.model) {
+                                this.messages[this.messages.length - 1].model = response_chunk.delta.model
+                            }
+                            if (response_chunk.delta.content) {
+                                this.messages[this.messages.length - 1].content += response_chunk.delta.content
+                            }
+                            this.scrollChatsToBottom()
+                        } catch (e) { }
+                        if (done) break
+                    }
                 } else {
                     alert("Input cannot be empty.")
                 }
