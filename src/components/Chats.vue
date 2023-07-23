@@ -24,34 +24,36 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container
-    fluid
-    v-for="(message, idx) in messages"
-    :key="idx"
-    :class="{ 'user-chat': message.model === 'user', chat: message.model !== 'user' }"
-  >
-    <v-row align="start">
-      <v-col cols="auto">
-        <v-avatar>
-          <v-img
-            v-if="llmConfigs && llmConfigs[message.model]"
-            :src="llmConfigs[message.model]['avatar']"
-            :alt="llmConfigs[message.model]['name']"
-          />
-        </v-avatar>
-      </v-col>
-      <v-col>
-        <v-textarea
-          variant="plain"
-          v-model="message.content"
-          rows="1"
-          hide-details
-          auto-grow
-          @keyup="handleKeyupInChat($event, message)"
-        ></v-textarea>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div id="chats-container">
+    <v-container
+      fluid
+      v-for="(message, idx) in messages"
+      :key="idx"
+      :class="{ 'user-chat': message.model === 'user', chat: message.model !== 'user' }"
+    >
+      <v-row align="start">
+        <v-col cols="auto">
+          <v-avatar>
+            <v-img
+              v-if="llmConfigs && llmConfigs[message.model]"
+              :src="llmConfigs[message.model]['avatar']"
+              :alt="llmConfigs[message.model]['name']"
+            />
+          </v-avatar>
+        </v-col>
+        <v-col>
+          <v-textarea
+            variant="plain"
+            v-model="message.content"
+            rows="1"
+            hide-details
+            auto-grow
+            @keyup="handleKeyupInChat($event, message)"
+          ></v-textarea>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <style>

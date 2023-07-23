@@ -37,6 +37,15 @@ export const messageStore = defineStore({
                 this.messages.push(response_message)
             }
         },
+        async scrollChatsToBottom() {
+            setTimeout(() => {
+                const lastMessage = document.querySelector('#chats-container > :last-child');
+                if (lastMessage) {
+                    lastMessage.scrollIntoView({ behavior: 'smooth' });
+                    // console.log(lastMessage)
+                }
+            }, 100);
+        },
         async handleKeyupInUserInput(e: KeyboardEvent) {
             const input_content = (e.target as HTMLInputElement).value
             if (e.ctrlKey && e.key === 'Enter') {
@@ -48,10 +57,12 @@ export const messageStore = defineStore({
                         content: input_content,
                     }
                     this.messages.push(input_message)
+                    this.scrollChatsToBottom()
                     const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
                     const response_message: Message = response.data.message
                     console.log(response_message)
                     this.messages.push(response_message)
+                    this.scrollChatsToBottom()
                 } else {
                     alert("Input cannot be empty.")
                 }

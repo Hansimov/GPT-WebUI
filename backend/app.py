@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -9,10 +10,11 @@ CORS(app)
 
 def response_massage(message):
     now = datetime.now()
+    time.sleep(2)
     message = {
-        "role": "user",
-        "model": "user",
-        "content": f"I'm your master. [{now.strftime('%Y-%m-%d %H:%M:%S')}]",
+        "role": "gpt-3.5",
+        "model": "gpt-3.5",
+        "content": f"I'm gpt-3.5. [{now.strftime('%Y-%m-%d %H:%M:%S')}]",
     }
     return jsonify({"status": "ok", "message": message})
 
