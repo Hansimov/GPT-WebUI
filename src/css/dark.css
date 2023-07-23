@@ -40,12 +40,12 @@ body {
 /*  */
 
 .chat {
-    background-color: #333;
+    background-color: #282828;
     border: solid #444 1px;
 }
 
 .user-input {
-    background-color: #333;
+    background-color: #383838;
     color:white;
     /* border: solid #444 1px; */
     margin-bottom: 20px;

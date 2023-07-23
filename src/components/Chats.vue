@@ -24,7 +24,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container fluid v-for="(message, idx) in messages" :key="idx" class="chat">
+  <v-container
+    fluid
+    v-for="(message, idx) in messages"
+    :key="idx"
+    :class="{ 'user-chat': message.model === 'user', chat: message.model !== 'user' }"
+  >
     <v-row align="start">
       <v-col cols="auto">
         <v-avatar>
@@ -51,17 +56,8 @@ export default defineComponent({
 
 <style>
 /* classes of different models */
-.user-chats {
-  /* background-color: lightgray; */
-}
-.gpt-35-chats {
-  /* background-color: lightblue; */
-}
-.gpt-4-chats {
-  /* background-color: lightcyan; */
-}
-.claude-2-chats {
-  /* background-color: lightyellow; */
+.user-chat {
+  background-color: #383838;
 }
 
 /* padding and min-height of textarea of chats */

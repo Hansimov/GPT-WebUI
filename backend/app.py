@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -7,10 +8,11 @@ CORS(app)
 
 
 def response_massage(message):
+    now = datetime.now()
     message = {
         "role": "user",
         "model": "user",
-        "content": "I'm your master.",
+        "content": f"I'm your master. [{now.strftime('%Y-%m-%d %H:%M:%S')}]",
     }
     return jsonify({"status": "ok", "message": message})
 
