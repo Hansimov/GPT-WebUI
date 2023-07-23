@@ -5,19 +5,15 @@ A clean and powerful web UI for all kinds of GPT-like chat service
 
 Here is the latest interface of the GPT-WebUI:
 
-![](examples/gpt-webui.png)
+![](examples/frontend.png)
 
 
 # Architecture
 
-Here is the architecture of the GPT-WebUI + GPT-Agents + MongoDB:
+Here is the architecture of the GPT-WebUI + Reactors + MongoDB:
 
 ![](examples/architecture.png)
 
-
-Here is the architecture of the GPT-Agents:
-
-![](examples/gpt-agents.png)
 
 # npm commands
 
