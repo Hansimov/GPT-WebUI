@@ -35,6 +35,7 @@ export const messageStore = defineStore({
                 const response_message: Message = response.data.message
                 console.log(response_message)
                 this.messages.push(response_message)
+                this.scrollChatsToBottom()
             }
         },
         async scrollChatsToBottom() {
@@ -42,11 +43,11 @@ export const messageStore = defineStore({
                 const lastMessage = document.querySelector('#chats-container > :last-child');
                 if (lastMessage) {
                     lastMessage.scrollIntoView({ behavior: 'smooth' });
-                    // console.log(lastMessage)
                 }
             }, 100);
         },
-        async handleKeyupInUserInput(e: KeyboardEvent) {
+
+        async handleKeyupInUserInput(e: KeyboardEvent, clearUserInput: () => void) {
             const input_content = (e.target as HTMLInputElement).value
             if (e.ctrlKey && e.key === 'Enter') {
                 if (input_content.trim() !== '') {
@@ -54,10 +55,12 @@ export const messageStore = defineStore({
                     const input_message: Message = {
                         model: "user",
                         role: "user",
-                        content: input_content,
+                        content: input_content.replace(/^\n+|\n+$/g, ''),
                     }
                     this.messages.push(input_message)
                     this.scrollChatsToBottom()
+                    clearUserInput()
+
                     const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
                     const response_message: Message = response.data.message
                     console.log(response_message)
