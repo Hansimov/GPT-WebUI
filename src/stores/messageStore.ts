@@ -38,19 +38,23 @@ export const messageStore = defineStore({
             }
         },
         async handleKeyupInUserInput(e: KeyboardEvent) {
-            const input_content = e.target.value
+            const input_content = (e.target as HTMLInputElement).value
             if (e.ctrlKey && e.key === 'Enter') {
-                console.log(input_content)
-                const input_message: Message = {
-                    model: "user",
-                    role: "user",
-                    content: input_content,
+                if (input_content.trim() !== '') {
+                    console.log(input_content)
+                    const input_message: Message = {
+                        model: "user",
+                        role: "user",
+                        content: input_content,
+                    }
+                    this.messages.push(input_message)
+                    const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
+                    const response_message: Message = response.data.message
+                    console.log(response_message)
+                    this.messages.push(response_message)
+                } else {
+                    alert("Input cannot be empty.")
                 }
-                this.messages.push(input_message)
-                const response = await axios.post(`${this.baseUrl}/api/messages`, input_message)
-                const response_message: Message = response.data.message
-                console.log(response_message)
-                this.messages.push(response_message)
             }
         },
     }
