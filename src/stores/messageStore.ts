@@ -46,7 +46,21 @@ export const messageStore = defineStore({
                 }
             }, 100);
         },
-
+        async *streamResponse(response: Response) {
+            const reader = response.body!.getReader()
+            let result = ''
+            while (true) {
+                const { done, value } = await reader.read()
+                result += new TextDecoder().decode(value)
+                try {
+                    const response_chunk: Message = JSON.parse(result)
+                    console.log(response_chunk)
+                    yield response_chunk
+                    result = ''
+                } catch (e) { break }
+                if (done) break
+            }
+        },
         async handleKeyupInUserInput(e: KeyboardEvent, clearUserInput: () => void) {
             const input_content = (e.target as HTMLInputElement).value
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -60,8 +74,9 @@ export const messageStore = defineStore({
                     this.messages.push(input_message)
                     this.scrollChatsToBottom()
                     clearUserInput()
-                    const thinkingMessage: Message = { "role": "gpt-4", "model": "gpt-4", "content": "Thinking..." }
-                    this.messages.push(thinkingMessage)
+                    this.messages.push(
+                        { "role": "gpt-4", "model": "gpt-4", "content": "Thinking..." }
+                    )
 
                     const response = await fetch(`${this.baseUrl}/api/messages`, {
                         method: 'POST',
@@ -70,28 +85,19 @@ export const messageStore = defineStore({
                         },
                         body: JSON.stringify(input_message)
                     })
-                    const reader = response.body!.getReader()
-                    let result = ''
-
-                    while (true) {
-                        const { done, value } = await reader.read()
-                        result = new TextDecoder().decode(value)
-                        try {
-                            const response_chunk: Message = JSON.parse(result)
-                            console.log(response_chunk)
-                            if (response_chunk.delta.role) {
-                                this.messages[this.messages.length - 1].role = response_chunk.delta.role
-                                this.messages[this.messages.length - 1].content = ""
-                            }
-                            if (response_chunk.delta.model) {
-                                this.messages[this.messages.length - 1].model = response_chunk.delta.model
-                            }
-                            if (response_chunk.delta.content) {
-                                this.messages[this.messages.length - 1].content += response_chunk.delta.content
-                            }
-                            this.scrollChatsToBottom()
-                        } catch (e) { }
-                        if (done) break
+                    for await (const response_chunk of this.streamResponse(response)) {
+                        if (response_chunk.delta.role) {
+                            this.messages[this.messages.length - 1].role = response_chunk.delta.role
+                            this.messages[this.messages.length - 1].content = ""
+                        }
+                        if (response_chunk.delta.model) {
+                            this.messages[this.messages.length - 1].model = response_chunk.delta.model
+                            this.messages[this.messages.length - 1].content = ""
+                        }
+                        if (response_chunk.delta.content) {
+                            this.messages[this.messages.length - 1].content += response_chunk.delta.content
+                        }
+                        this.scrollChatsToBottom()
                     }
                 } else {
                     alert("Input cannot be empty.")

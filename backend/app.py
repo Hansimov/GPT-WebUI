@@ -36,7 +36,7 @@ def response_message(message):
                     )
                     index += 1
                     print(delta_json, flush=True)
-                    time.sleep(random.random() * 0.3)
+                    time.sleep(random.random() * 0.2)
                     yield delta_json
             else:
                 time.sleep(random.random() * 2)
