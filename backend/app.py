@@ -45,9 +45,16 @@ def response_message(message):
                     {"delta": delta, "finish_reason": None, "index": index}
                 )
                 index += 1
-        yield json.dumps({"delta": {}, "finish_reason": "stop", "index": index})
+        last_message = {
+            "delta": {"content": ""},
+            "finish_reason": "stop",
+            "index": index,
+        }
+        yield json.dumps(last_message)
 
-    return Response(generate(), mimetype="application/json")
+    response = Response(generate(), mimetype="application/json")
+
+    return response
 
 
 def connect_database(host="localhost", port=27027, database="gpt-webui"):

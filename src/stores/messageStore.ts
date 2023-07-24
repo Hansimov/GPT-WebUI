@@ -48,17 +48,21 @@ export const messageStore = defineStore({
         },
         async *streamResponse(response: Response) {
             const reader = response.body!.getReader()
-            let result = ''
+            let decoded_text = ''
             while (true) {
                 const { done, value } = await reader.read()
-                result += new TextDecoder().decode(value)
+                console.log(done, value)
                 if (done) break
-                try {
-                    const response_chunk: Message = JSON.parse(result)
-                    console.log(response_chunk)
+                decoded_text += new TextDecoder().decode(value)
+                console.log("decoded text:", decoded_text)
+                const re = /(?<=\})\s*(?=\{)/g
+                const chunks = decoded_text.split(re)
+                for (const chunk of chunks) {
+                    const response_chunk: Message = JSON.parse(chunk)
+                    console.log("response_chunk:", response_chunk)
                     yield response_chunk
-                    result = ''
-                } catch (e) { }
+                }
+                decoded_text = ""
             }
             console.log("Response stream ended.")
         },
@@ -101,7 +105,7 @@ export const messageStore = defineStore({
                         this.scrollChatsToBottom()
                     }
                 } else {
-                    alert("Input cannot be empty.")
+                    // alert("Input cannot be empty.")
                 }
             }
         },
