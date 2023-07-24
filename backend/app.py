@@ -36,10 +36,10 @@ def response_message(message):
                     )
                     index += 1
                     print(delta_json, flush=True)
-                    time.sleep(random.random() * 0.2)
+                    time.sleep(random.random() * 0.1)
                     yield delta_json
             else:
-                time.sleep(random.random() * 2)
+                time.sleep(random.random() * 1)
                 delta = {key: value}
                 yield json.dumps(
                     {"delta": delta, "finish_reason": None, "index": index}

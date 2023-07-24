@@ -49,17 +49,18 @@ export const messageStore = defineStore({
         async *streamResponse(response: Response) {
             const reader = response.body!.getReader()
             let result = ''
-            while (true) { // FIXME - Infinite loop
+            while (true) {
                 const { done, value } = await reader.read()
                 result += new TextDecoder().decode(value)
+                if (done) break
                 try {
                     const response_chunk: Message = JSON.parse(result)
                     console.log(response_chunk)
                     yield response_chunk
                     result = ''
-                } catch (e) { break }
-                if (done) break
+                } catch (e) { }
             }
+            console.log("Response stream ended.")
         },
         async handleKeyupInUserInput(e: KeyboardEvent, clearUserInput: () => void) {
             const input_content = (e.target as HTMLInputElement).value
