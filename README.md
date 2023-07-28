@@ -10,9 +10,14 @@ Here is the latest interface of the GPT-WebUI:
 
 # Architecture
 
-Here is the architecture of the GPT-WebUI + Reactors + MongoDB:
+Here is the **top architecture** of the GPT-WebUI + Reactors + MongoDB:
 
 ![](examples/architecture.png)
+
+
+Here is the **mechanism of messages** of the GPT-WebUI + Reactors + MongoDB:
+
+![](examples/message_mechanism.png)
 
 
 # npm commands

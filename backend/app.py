@@ -4,7 +4,7 @@ import random
 import requests
 
 from datetime import datetime
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 from pymongo import MongoClient
 
@@ -119,20 +119,39 @@ def post_messages():
     return response_message(message)
 
 
+agents_app_host = "localhost"
+agents_app_port = "8888"
+agents_app_chat_api = f"http://{agents_app_host}:{agents_app_port}/api/chat"
+headers = {
+    "Content-Type": "application/json",
+}
+
+
 @app.route("/api/chat", methods=["POST"])
-def get_chat():
-    agents_app_host = "localhost"
-    agents_app_port = "8888"
-    agents_app_chat_api = f"http://{agents_app_host}:{agents_app_port}/api/chat"
-    headers = {
-        "Content-Type": "application/json",
-    }
+def forward_chat():
     data = request.json
     print(data)
     response = requests.post(
-        agents_app_chat_api,
-        headers=headers,
-        json=data,
+        agents_app_chat_api, headers=headers, json=data, stream=True
+    )
+
+    @stream_with_context
+    def generate():
+        for chunk in response.iter_lines():
+            chunk_str = chunk.decode("utf-8")
+            print(chunk_str)
+            # TODO: convert multiple concated dicts to list of dicts in json format
+            yield chunk_str
+
+    response_for_frontend = Response(generate(), mimetype="text/plain")
+    return response_for_frontend
+
+
+def get_chat():
+    data = request.json
+    print(data)
+    response = requests.post(
+        agents_app_chat_api, headers=headers, json=data, stream=True
     )
     print(response.text)
     message = response.json()
