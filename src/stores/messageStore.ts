@@ -27,7 +27,7 @@ export const messageStore = defineStore({
         async handleKeyupInChat(e: KeyboardEvent, message: Message) {
             if (e.ctrlKey && e.key === 'Enter') {
                 console.log(message.content)
-                const response = await axios.post(`${this.baseUrl}/api/messages`, {
+                const response = await axios.post(`${this.baseUrl}/api/chat`, {
                     model: message.model,
                     role: message.role,
                     content: message.content,
@@ -80,10 +80,10 @@ export const messageStore = defineStore({
                     this.scrollChatsToBottom()
                     clearUserInput()
                     this.messages.push(
-                        { "role": "gpt-4", "model": "gpt-4", "content": "Thinking..." }
+                        { "role": "gpt-4", "model": "gpt-4", "content": "" }
                     )
 
-                    const response = await fetch(`${this.baseUrl}/api/messages`, {
+                    const response = await fetch(`${this.baseUrl}/api/chat`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -93,11 +93,11 @@ export const messageStore = defineStore({
                     for await (const response_chunk of this.streamResponse(response)) {
                         if (response_chunk.delta.role) {
                             this.messages[this.messages.length - 1].role = response_chunk.delta.role
-                            this.messages[this.messages.length - 1].content = ""
+                            // this.messages[this.messages.length - 1].content = ""
                         }
                         if (response_chunk.delta.model) {
                             this.messages[this.messages.length - 1].model = response_chunk.delta.model
-                            this.messages[this.messages.length - 1].content = ""
+                            // this.messages[this.messages.length - 1].content = ""
                         }
                         if (response_chunk.delta.content) {
                             this.messages[this.messages.length - 1].content += response_chunk.delta.content

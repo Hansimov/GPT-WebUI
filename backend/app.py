@@ -1,6 +1,8 @@
 import json
 import time
 import random
+import requests
+
 from datetime import datetime
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
@@ -57,6 +59,39 @@ def response_message(message):
     return response
 
 
+def streamify_message(message):
+    def generate():
+        index = 0
+        for key, value in message.items():
+            if key == "content":
+                content_chunks = value.split()
+                for chunk in content_chunks:
+                    delta = {"content": f" {chunk}"}
+                    delta_json = json.dumps(
+                        {"delta": delta, "finish_reason": None, "index": index}
+                    )
+                    index += 1
+                    print(delta_json, flush=True)
+                    time.sleep(random.random() * 0.1)
+                    yield delta_json
+            else:
+                time.sleep(random.random() * 1)
+                delta = {key: value}
+                yield json.dumps(
+                    {"delta": delta, "finish_reason": None, "index": index}
+                )
+                index += 1
+        last_message = {
+            "delta": {"content": ""},
+            "finish_reason": "stop",
+            "index": index,
+        }
+        yield json.dumps(last_message)
+
+    response = Response(generate(), mimetype="application/json")
+    return response
+
+
 def connect_database(host="localhost", port=27027, database="gpt-webui"):
     mongodb_uri = f"mongodb://{host}:{port}"
     client = MongoClient(mongodb_uri)
@@ -82,6 +117,28 @@ def post_messages():
     model = message["model"]
     print(f"[{model}]: {content}")
     return response_message(message)
+
+
+@app.route("/api/chat", methods=["POST"])
+def get_chat():
+    agents_app_host = "localhost"
+    agents_app_port = "8888"
+    agents_app_chat_api = f"http://{agents_app_host}:{agents_app_port}/api/chat"
+    headers = {
+        "Content-Type": "application/json",
+    }
+    data = request.json
+    print(data)
+    response = requests.post(
+        agents_app_chat_api,
+        headers=headers,
+        json=data,
+    )
+    print(response.text)
+    message = response.json()
+    message["role"] = "Chimera"
+    message["model"] = "Chimera"
+    return streamify_message(message)
 
 
 @app.route("/api/configs")
