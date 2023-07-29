@@ -1,3 +1,4 @@
+import inspect
 import json
 import time
 import random
@@ -10,6 +11,19 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 CORS(app)
+
+
+def timing(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        caller = inspect.currentframe().f_back.f_code.co_name
+        print(f"Elasped time of {caller}.{func.__name__}: {elapsed_time:.3f} s")
+        return result
+
+    return wrapper
 
 
 def response_message(message):
@@ -128,6 +142,7 @@ headers = {
 
 
 @app.route("/api/chat", methods=["POST"])
+@timing
 def forward_chat():
     data = request.json
     print(data)
@@ -135,7 +150,6 @@ def forward_chat():
         agents_app_chat_api, headers=headers, json=data, stream=True
     )
 
-    @stream_with_context
     def generate():
         for chunk in response.iter_lines():
             chunk_str = chunk.decode("utf-8")
